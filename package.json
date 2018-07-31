@@ -1,0 +1,34 @@
+{
+  "name": "tinker.macro",
+  "version": "0.0.1",
+  "description": "Evaluate Laravel Tinker expressions at build-time",
+  "main": "macro.js",
+  "files": [
+    "macro.js"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "babel-plugin-macros",
+    "babel-macros",
+    "laravel",
+    "tinker",
+    "php",
+    "artisan"
+  ],
+  "author": "Brad Cornes <bradlc41@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bradlc/tinker.macro.git"
+  },
+  "homepage": "https://github.com/bradlc/tinker.macro#readme",
+  "bugs": {
+    "url": "https://github.com/bradlc/tinker.macro/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "babel-plugin-macros": "^2.3.0",
+    "deasync": "^0.1.13"
+  }
+}
