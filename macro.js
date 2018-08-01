@@ -2,6 +2,7 @@ let { spawn } = require('child_process')
 let path = require('path')
 let deasync = require('deasync')
 let { createMacro } = require('babel-plugin-macros')
+let { parseExpression } = require('babylon')
 
 module.exports = createMacro(tinkerMacro)
 
@@ -24,6 +25,7 @@ function tinkerMacro({ references, state, babel }) {
     tinker.stdout.on('data', data => {
       if (data.toString().startsWith('=>')) {
         result = data.toString().match(/=> (.*?)\n/)[1]
+        result = result.substr(1, result.length - 2)
         done = true
       }
       if (done) {
@@ -31,20 +33,12 @@ function tinkerMacro({ references, state, babel }) {
         return
       }
       if (data.toString().startsWith('>>>')) {
-        tinker.stdin.write(`${php}\n`)
+        tinker.stdin.write(`json_encode(${php})\n`)
       }
     })
 
     deasync.loopWhile(() => !done)
 
-    if (result.startsWith('"')) {
-      ref.parentPath.replaceWith(
-        t.stringLiteral(result.substr(1, result.length - 2))
-      )
-    } else {
-      ref.parentPath.replaceWith(
-        t.booleanLiteral(result === 'true' ? true : false)
-      )
-    }
+    ref.parentPath.replaceWith(parseExpression(result))
   })
 }
