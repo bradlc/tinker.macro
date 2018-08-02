@@ -30,3 +30,24 @@ let isDebug = tinker`config('app.debug')`
 
 let isDebug = true
 ```
+
+## Re-evaluating on change
+
+If you are using webpack you can ensure that expressions are re-evaluated when updating your Laravel app. Add the loader – `tinker.macro/webpack` – to your webpack configuration, like so:
+
+```js
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'tinker.macro/webpack'
+      }
+      // ...
+    ]
+  }
+  // ...
+}
+```
