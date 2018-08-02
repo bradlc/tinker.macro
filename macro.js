@@ -39,6 +39,8 @@ function tinkerMacro({ references, state, babel }) {
 
     deasync.loopWhile(() => !done)
 
+    ref.parentPath.addComment('trailing', 'tinker.macro')
+
     ref.parentPath.replaceWith(parseExpression(result))
   })
 }
