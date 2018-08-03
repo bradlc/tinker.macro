@@ -26,9 +26,34 @@ That’s it!
 import tinker from 'tinker.macro'
 let isDebug = tinker`config('app.debug')`
 
-↓ ↓ ↓ ↓ ↓ ↓ ↓
+// ↓ ↓ ↓ ↓ ↓ ↓ ↓
 
 let isDebug = true
+```
+
+If you are executing a single function call you can import the function like this:
+
+```js
+import { config } from 'tinker.macro'
+let isDebug = config('app.debug')
+
+// ↓ ↓ ↓ ↓ ↓ ↓ ↓
+
+let isDebug = true
+```
+
+## More Examples
+
+```js
+import tinker, { route } from 'tinker.macro'
+// these are equivalent
+let articleRoute1 = route('article', { id: 1 })
+let articleRoute2 = tinker`route('article', ['id' => 1])`
+
+// ↓ ↓ ↓ ↓ ↓ ↓ ↓
+
+let articleRoute1 = 'http://localhost/article/1'
+let articleRoute2 = 'http://localhost/article/1'
 ```
 
 ## Re-evaluating on change
