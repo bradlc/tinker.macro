@@ -47,24 +47,33 @@ function evaluate(php, state) {
   tinker.stdin.setEncoding('utf-8')
 
   let done = false
+  let reallyDone = false
   let result
 
   tinker.stdout.on('data', data => {
     if (data.toString().startsWith('=>')) {
-      result = data.toString().match(/=> (.*?)\n/)[1]
-      result = result.substr(1, result.length - 2)
+      if (done) {
+        result = data.toString().match(/=> (.*?)\n/)[1]
+        result = result.substr(1, result.length - 2)
+        reallyDone = true
+      }
       done = true
     }
-    if (done) {
-      tinker.stdin.end()
+    if (reallyDone) {
       return
     }
     if (data.toString().startsWith('>>>')) {
-      tinker.stdin.write(`json_encode(${php})\n`)
+      if (done) {
+        tinker.stdin.write(`json_encode($_)\n`)
+      } else {
+        tinker.stdin.write(`${php.replace(/[\n\r]/g, ' ').trim()}\n`)
+      }
     }
   })
 
-  deasync.loopWhile(() => !done)
+  deasync.loopWhile(() => !reallyDone)
+
+  tinker.stdin.end()
 
   return result
 }
