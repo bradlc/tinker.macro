@@ -44,6 +44,8 @@ let isDebug = true
 
 ## More Examples
 
+### [route](https://laravel.com/docs/5.6/helpers#method-route) function
+
 ```js
 import tinker, { route } from 'tinker.macro'
 // these are equivalent
@@ -54,6 +56,32 @@ let articleRoute2 = tinker`route('article', ['id' => 1])`
 
 let articleRoute1 = 'http://localhost/article/1'
 let articleRoute2 = 'http://localhost/article/1'
+```
+
+### Retrieving a list of [named routes](https://laravel.com/docs/5.6/routing#named-routes)
+
+```js
+import tinker from 'tinker.macro'
+
+let routes = tinker`
+  $routes = [];
+  foreach (app()->routes->getRoutes() as $route) {
+    $name = $route->getName();
+    if ($name !== null) {
+      $uri = $route->uri;
+      $routes[$name] = ($uri === '/' ? '' : '/') . $uri;
+    }
+  }
+  $routes;
+`
+
+// ↓ ↓ ↓ ↓ ↓ ↓ ↓
+
+let routes = {
+  home: '/',
+  blog: '/blog',
+  post: '/blog/{slug}'
+}
 ```
 
 ## Re-evaluating on change
