@@ -1,6 +1,6 @@
 # tinker.macro
 
-> Evaluate [Laravel Tinker](https://github.com/laravel/tinker) expressions at build-time
+> Evaluate [Laravel](https://laravel.com/) code at build-time, via [Laravel Tinker](https://github.com/laravel/tinker)
 
 ## Installation
 
