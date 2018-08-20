@@ -23,7 +23,9 @@ function tinkerMacro({ references, state, babel }) {
     .filter(x => x !== 'default')
     .forEach(x => {
       references[x].forEach(ref => {
-        ref.parentPath.traverse({
+        let expr = findExpressionParent(ref)
+
+        expr.traverse({
           ObjectExpression(path) {
             let obj = generate(path.node).code
             eval(`obj = ${obj}`)
@@ -35,7 +37,18 @@ function tinkerMacro({ references, state, babel }) {
             )
           }
         })
-        let result = evaluate(generate(ref.parentPath.node).code, state)
+
+        let i = 0
+        let code = generate(expr.node).code.replace(
+          /\.(?![^(]*\))/g,
+          _ => (i++ === 0 ? '::' : '->')
+        )
+
+        if (i > 0) {
+          code = `App\\${code}`
+        }
+
+        let result = evaluate(code, state)
         ref.parentPath.addComment('trailing', 'tinker.macro')
         ref.parentPath.replaceWith(parseExpression(result))
       })
@@ -76,4 +89,15 @@ function evaluate(php, state) {
   tinker.stdin.end()
 
   return result
+}
+
+function findExpressionParent(ref, pos) {
+  if (!pos) pos = ref.node.start
+  let nextRef = ref.findParent(
+    p => p.isCallExpression() || p.isMemberExpression()
+  )
+  if (nextRef && nextRef.node.start === pos) {
+    return findExpressionParent(nextRef, nextRef.node.start)
+  }
+  return ref
 }

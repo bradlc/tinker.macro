@@ -42,6 +42,29 @@ let isDebug = config('app.debug')
 let isDebug = true
 ```
 
+There is also a convenient way to access `App\*` class methods and properties:
+
+```js
+import { Article } from 'tinker.macro'
+let article = Article.where('id', 7).first()
+
+// ↓ ↓ ↓ ↓ ↓ ↓ ↓
+
+let article = {
+  id: 7,
+  title: 'Hello, world',
+  body: 'Lorem ipsum dolor sit amet.'
+  // etc.
+}
+```
+
+This is the same as:
+
+```js
+import tinker from 'tinker.macro'
+let articles = tinker`App\\Post::where('id', 7)->first()`
+```
+
 ## More Examples
 
 ### [route](https://laravel.com/docs/5.6/helpers#method-route) function
