@@ -1,6 +1,6 @@
 {
   "name": "tinker.macro",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Evaluate Laravel Tinker expressions at build-time",
   "main": "macro.js",
   "files": [
