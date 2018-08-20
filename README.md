@@ -62,7 +62,7 @@ This is the same as:
 
 ```js
 import tinker from 'tinker.macro'
-let articles = tinker`App\\Post::where('id', 7)->first()`
+let articles = tinker`App\\Article::where('id', 7)->first()`
 ```
 
 ## More Examples
