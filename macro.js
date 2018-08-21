@@ -56,7 +56,10 @@ function tinkerMacro({ references, state, babel }) {
 }
 
 function evaluate(php, state) {
-  let tinker = spawn('php', [path.resolve(state.cwd, 'artisan'), 'tinker'])
+  let tinker = spawn('php', [
+    path.resolve(state.file.opts.sourceRoot, 'artisan'),
+    'tinker'
+  ])
   tinker.stdin.setEncoding('utf-8')
 
   let done = false
